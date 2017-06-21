@@ -1,0 +1,587 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Bitcraft.StateMachine</name>
+    </assembly>
+    <members>
+        <member name="T:Bitcraft.StateMachine.StateEnterEventArgs">
+            <summary>
+            Represents event arguments when entering a new state.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateEnterEventArgs.From">
+            <summary>
+            Gets the source state token.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateEnterEventArgs.Data">
+            <summary>
+            Gets the data provided from source, for the target.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateEnterEventArgs.Redirect">
+            <summary>
+            Gets a TransitionInfo object used for potential redirection directly from an Enter state event.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateEnterEventArgs.#ctor(Bitcraft.StateMachine.StateToken,System.Object)">
+            <summary>
+            Initializes the StateEnterEventArgs instance.
+            </summary>
+            <param name="from">The source state of the transition.</param>
+            <param name="data">The data provided from the source state, for the target state.</param>
+        </member>
+        <member name="T:Bitcraft.StateMachine.StateExitEventArgs">
+            <summary>
+            Represents event arguments when exiting a state.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateExitEventArgs.To">
+            <summary>
+            Gets the target state token.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateExitEventArgs.Data">
+            <summary>
+            Gets the data provided to the target.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateExitEventArgs.#ctor(Bitcraft.StateMachine.StateToken,System.Object)">
+            <summary>
+            Initializes the StateExitEventArgs instance.
+            </summary>
+            <param name="to">The target state of the transition.</param>
+            <param name="data">The data provided to the target state.</param>
+        </member>
+        <member name="T:Bitcraft.StateMachine.StateChangedEventArgs">
+            <summary>
+            Represents a state transition event arguments.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateChangedEventArgs.OldState">
+            <summary>
+            Gets the previous state. (the state before transition)
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateChangedEventArgs.NewState">
+            <summary>
+            Gets the new state. (the state after transition)
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateChangedEventArgs.#ctor(Bitcraft.StateMachine.StateBase,Bitcraft.StateMachine.StateBase)">
+            <summary>
+            Initializes the StateChangedEventArgs instance.
+            </summary>
+            <param name="oldState">Old state.</param>
+            <param name="newState">New state.</param>
+        </member>
+        <member name="T:Bitcraft.StateMachine.ActionExceptionBase">
+            <summary>
+            Represents an exception related to a state machine action.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.ActionExceptionBase.ActionToken">
+            <summary>
+            Gets the token of the action that produced the error.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.ActionExceptionBase.StateToken">
+            <summary>
+            Gets the token of the state that was active when the error has been produced.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.ActionExceptionBase.#ctor(Bitcraft.StateMachine.ActionToken,Bitcraft.StateMachine.StateToken)">
+            <summary>
+            Initializes the ActionExceptionBase instance.
+            </summary>
+            <param name="actionToken">The token of the action that produced the error.</param>
+            <param name="stateToken">The token of the state that was active when the error has been produced.</param>
+        </member>
+        <member name="M:Bitcraft.StateMachine.ActionExceptionBase.#ctor(Bitcraft.StateMachine.ActionToken,Bitcraft.StateMachine.StateToken,System.String)">
+            <summary>
+            Initializes the ActionExceptionBase instance.
+            </summary>
+            <param name="actionToken">The token of the action that produced the error.</param>
+            <param name="stateToken">The token of the state that was active when the error has been produced.</param>
+            <param name="message">Custom message explaining the error.</param>
+        </member>
+        <member name="T:Bitcraft.StateMachine.IllegalActionException">
+            <summary>
+            Represents an exception related to an invalid state machine action.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.IllegalActionException.#ctor(Bitcraft.StateMachine.ActionToken,Bitcraft.StateMachine.StateToken)">
+            <summary>
+            Initializes the IllegalActionException instance.
+            </summary>
+            <param name="actionToken">The token of the action that produced the error.</param>
+            <param name="stateToken">The token of the state that was active when the error has been produced.</param>
+        </member>
+        <member name="M:Bitcraft.StateMachine.IllegalActionException.#ctor(Bitcraft.StateMachine.ActionToken,Bitcraft.StateMachine.StateToken,System.String)">
+            <summary>
+            Initializes the IllegalActionException instance.
+            </summary>
+            <param name="actionToken">The token of the action that produced the error.</param>
+            <param name="stateToken">The token of the state that was active when the error has been produced.</param>
+            <param name="message">Custom message explaining the error.</param>
+        </member>
+        <member name="T:Bitcraft.StateMachine.UnknownActionException">
+            <summary>
+            Represents an exception related to an undecalred state machine action.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.UnknownActionException.#ctor(Bitcraft.StateMachine.ActionToken,Bitcraft.StateMachine.StateToken)">
+            <summary>
+            Initializes the UnknownActionException instance.
+            </summary>
+            <param name="actionToken">The token of the action that produced the error.</param>
+            <param name="stateToken">The token of the state that was active when the error has been produced.</param>
+        </member>
+        <member name="T:Bitcraft.StateMachine.UnknownStateException">
+            <summary>
+            Represents an exception related to an undeclared state machine state.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.UnknownStateException.SourceStateToken">
+            <summary>
+            Gets the token of the source state.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.UnknownStateException.UnknownStateToken">
+            <summary>
+            Gets the undeclared token that was targeting the new state.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.UnknownStateException.#ctor(Bitcraft.StateMachine.StateToken,Bitcraft.StateMachine.StateToken)">
+            <summary>
+            Initializes the UnknownStateException instance.
+            </summary>
+            <param name="sourceStateToken">The token of the source state.</param>
+            <param name="unknownStateToken">The undeclared token that was targeting the new state.</param>
+        </member>
+        <member name="T:Bitcraft.StateMachine.IStateMachine">
+            <summary>
+            The state machine manages the states and the transtions.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.IStateMachine.Context">
+            <summary>
+            Gets the context of the current state machine.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.IStateMachine.CurrentState">
+            <summary>
+            Gets the currently active state.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.IStateMachine.CurrentStateToken">
+            <summary>
+            Gets the token of the currently active state. (shortcut to CurrentState.Token)
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.IStateMachine.States">
+            <summary>
+            Gets the registered states.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.IStateMachine.SetInitialState(Bitcraft.StateMachine.StateToken)">
+            <summary>
+            Sets the initial state of the current state machine, and resets its internal state.
+            </summary>
+            <param name="initialState">The initial state.</param>
+        </member>
+        <member name="M:Bitcraft.StateMachine.IStateMachine.SetInitialState(Bitcraft.StateMachine.StateToken,System.Object)">
+            <summary>
+            Sets the initial state of the current state machine, and resets its internal state.
+            </summary>
+            <param name="initialState">The initial state.</param>
+            <param name="data">The data to be provided to the initial state.</param>
+        </member>
+        <member name="P:Bitcraft.StateMachine.IStateMachine.CanPerformAction">
+            <summary>
+            Gets whether it is possible to call PerformAction without being returned false.
+            <remarks>Typically, CanPerformAction returns false when a transition is being evaluated asynchronously and still underway.</remarks>
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.IStateMachine.PerformAction(Bitcraft.StateMachine.ActionToken)">
+            <summary>
+            Tells the state machine that an external action occured.
+            This is the only way to make the state machine to possibly change its internal state.
+            </summary>
+            <param name="action">The action done that may change the state machine internal state.</param>
+            <returns>Returns an ActionResultType explaining if performing action succeeded or not.</returns>
+        </member>
+        <member name="M:Bitcraft.StateMachine.IStateMachine.PerformAction(Bitcraft.StateMachine.ActionToken,System.Object)">
+            <summary>
+            Tells the state machine that an external action occured.
+            This is the only way to make the state machine to possibly change its internal state.
+            </summary>
+            <param name="action">The action done that may change the state machine internal state.</param>
+            <param name="data">A custom data related to the action performed.</param>
+            <returns>Returns an ActionResultType explaining if performing action succeeded or not.</returns>
+        </member>
+        <member name="E:Bitcraft.StateMachine.IStateMachine.StateChanged">
+            <summary>
+            Raised when the state machine transitions from a state to another.
+            </summary>
+        </member>
+        <member name="E:Bitcraft.StateMachine.IStateMachine.Completed">
+            <summary>
+            Raised when the state machine has reached its final state.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.IStateMachine.RegisterState(Bitcraft.StateMachine.StateBase)">
+            <summary>
+            Registers a state, given a new context for this state and its sub states.
+            </summary>
+            <param name="state">A state to be known by the state machine.</param>
+        </member>
+        <member name="T:Bitcraft.StateMachine.StateBase">
+            <summary>
+            Represent a state of the state machine.
+            A state is also a sub state machine in order to allow building a hierarchical state machine.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateBase.Token">
+            <summary>
+            Gets the token that identifies the current state.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateBase.StateManager">
+            <summary>
+            Gets the state manager in which the current state is registered.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateBase.Handlers">
+            <summary>
+            Gets the sequence of registered action tokens.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateBase.Context">
+            <summary>
+            Gets the context of the current state machine.
+            </summary>
+        </member>
+        <member name="E:Bitcraft.StateMachine.StateBase.Enter">
+            <summary>
+            Raised when the state machine enters the current state.
+            </summary>
+        </member>
+        <member name="E:Bitcraft.StateMachine.StateBase.Exit">
+            <summary>
+            Raised when the state machine exits the current state.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateBase.#ctor(Bitcraft.StateMachine.StateToken)">
+            <summary>
+            Initializes the StateBase instance.
+            </summary>
+            <param name="token">The token that identifies the current state.</param>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateBase.Initialize(Bitcraft.StateMachine.StateManager)">
+            <summary>
+            Initializes the current state.
+            </summary>
+            <remarks>This method MUST NEVER BE CALLED by any external component.</remarks>
+            <param name="parent">The state machine in which the current state is registered.</param>
+        </member>
+        <member name="E:Bitcraft.StateMachine.StateBase.Initialized">
+            <summary>
+            Raised when the state machine is initialized.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateBase.OnInitialized">
+            <summary>
+            Called when the state machine is initialized.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateBase.GetContext``1">
+            <summary>
+            Gets the typed state machine context.
+            </summary>
+            <typeparam name="T">The type of the state machine context.</typeparam>
+            <returns>Returns the state machine context.</returns>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateBase.OnEnter(Bitcraft.StateMachine.StateEnterEventArgs)">
+            <summary>
+            Called when the state machine enters the current state.
+            </summary>
+            <param name="e">Custem event arguments.</param>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateBase.OnExit(Bitcraft.StateMachine.StateExitEventArgs)">
+            <summary>
+            Called when the state machine exits the current state.
+            </summary>
+            <param name="e">Custem event arguments.</param>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateBase.RegisterNoopActionHandler(Bitcraft.StateMachine.ActionToken)">
+            <summary>
+            Registers a handler where the state does not transition on the given action.
+            </summary>
+            <param name="action">The action that do not ignite transition.</param>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateBase.RegisterActionHandler(Bitcraft.StateMachine.ActionToken,System.Action{System.Object,System.Action{Bitcraft.StateMachine.StateToken}})">
+            <summary>
+            Registers a handler where the state transitions to another one for a given action.
+            </summary>
+            <param name="action">The action that makes the handler to be evaluated.</param>
+            <param name="handler">The handler that evaluate and possibly performs the state transition.</param>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateBase.RegisterActionHandler(Bitcraft.StateMachine.ActionToken,System.Action{System.Object,System.Action{Bitcraft.StateMachine.StateToken,System.Object}})">
+            <summary>
+            Registers a handler where the state transitions to another one for a given action.
+            </summary>
+            <param name="action">The action that makes the handler to be evaluated.</param>
+            <param name="handler">The handler that evaluate and possibly performs the state transition.</param>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateBase.IsHandlingAsync">
+            <summary>
+            Tells whether a transition is being handled asynchronously and still underway or not.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateBase.Handle(Bitcraft.StateMachine.ActionToken,System.Object,System.Action{Bitcraft.StateMachine.StateToken,System.Object})">
+            <summary>
+            Evaluates a handler that decides transition to the next state for a given action.
+            </summary>
+            <param name="action">The action that makes the handler to be evaluated.</param>
+            <param name="data">A custom data related to the action performed.</param>
+            <param name="callback">When called, performs the state transition.</param>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateBase.ToString">
+            <summary>
+            Provides a string representation of the state.
+            </summary>
+            <returns>Returns the string representation of the state.</returns>
+        </member>
+        <member name="T:Bitcraft.StateMachine.StateManager">
+            <summary>
+            Represents a finite state machine.
+            The state machine manages the states and the transtions.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateManager.Context">
+            <summary>
+            Gets the context of the current state machine.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateManager.CurrentState">
+            <summary>
+            Gets the currently active state.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateManager.CurrentStateToken">
+            <summary>
+            Gets the token of the currently active state. (shortcut to CurrentState.Token)
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateManager.States">
+            <summary>
+            Gets the registered states.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateManager.#ctor">
+            <summary>
+            Initializes the StateManager instance without context.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateManager.#ctor(System.Object)">
+            <summary>
+            Initializes the StateManager instance with a context.
+            </summary>
+            <param name="context">The context to share among the states of the current state machine.</param>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateManager.SetInitialState(Bitcraft.StateMachine.StateToken)">
+            <summary>
+            Sets the initial state of the current state machine, and resets its internal state.
+            </summary>
+            <param name="initialState">The initial state.</param>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateManager.SetInitialState(Bitcraft.StateMachine.StateToken,System.Object)">
+            <summary>
+            Sets the initial state of the current state machine, and resets its internal state.
+            </summary>
+            <param name="initialState">The initial state.</param>
+            <param name="data">The data to be provided to the initial state.</param>
+        </member>
+        <member name="P:Bitcraft.StateMachine.StateManager.CanPerformAction">
+            <summary>
+            Gets whether it is possible to call PerformAction without being returned false.
+            <remarks>Typically, CanPerformAction returns false when a transition is being evaluated asynchronously and still underway.</remarks>
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateManager.PerformAction(Bitcraft.StateMachine.ActionToken)">
+            <summary>
+            Tells the state machine that an external action occured.
+            This is the only way to make the state machine to possibly change its internal state.
+            </summary>
+            <param name="action">The action done that may change the state machine internal state.</param>
+            <returns>Returns false if it is already processing an asynchronous action, true otherwise.</returns>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateManager.PerformAction(Bitcraft.StateMachine.ActionToken,System.Object)">
+            <summary>
+            Tells the state machine that an external action occured.
+            This is the only way to make the state machine to possibly change its internal state.
+            </summary>
+            <param name="action">The action done that may change the state machine internal state.</param>
+            <param name="data">A custom data related to the action performed.</param>
+            <returns>Returns false if it is already processing an asynchronous action, true otherwise.</returns>
+        </member>
+        <member name="E:Bitcraft.StateMachine.StateManager.StateChanged">
+            <summary>
+            Raised when the state machine transitions from a state to another.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateManager.OnStateChanged(Bitcraft.StateMachine.StateChangedEventArgs)">
+            <summary>
+            Called when the state machine transitions from a state to another.
+            </summary>
+            <param name="e">Custom event arguments.</param>
+        </member>
+        <member name="E:Bitcraft.StateMachine.StateManager.Completed">
+            <summary>
+            Raised when the state machine has reached its final state.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateManager.OnCompleted">
+            <summary>
+            Called when the state machine has reached its final state.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateManager.RegisterState(Bitcraft.StateMachine.StateBase)">
+            <summary>
+            Registers a state, given a new context for this state and its sub states.
+            </summary>
+            <param name="state">A state to be known by the state machine.</param>
+        </member>
+        <member name="T:Bitcraft.StateMachine.StateToken">
+            <summary>
+            Represents a state machine state.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateToken.#ctor">
+            <summary>
+            Initializes the StateToken instance.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.StateToken.#ctor(System.String)">
+            <summary>
+            Initializes the StateToken instance.
+            </summary>
+            <param name="name">Name of the state token.</param>
+        </member>
+        <member name="T:Bitcraft.StateMachine.ActionToken">
+            <summary>
+            Represents a state machine action.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.ActionToken.#ctor">
+            <summary>
+            Initializes the ActionToken instance.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.ActionToken.#ctor(System.String)">
+            <summary>
+            Initializes the ActionToken instance.
+            </summary>
+            <param name="name">Name of the action token.</param>
+        </member>
+        <member name="T:Bitcraft.StateMachine.Token">
+            <summary>
+            Represents a uniquely identifiable entity.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.Token.#ctor">
+            <summary>
+            Initializes the Token instance.
+            </summary>
+        </member>
+        <member name="M:Bitcraft.StateMachine.Token.#ctor(System.String)">
+            <summary>
+            Initializes the Token instance.
+            </summary>
+            <param name="name">Name of the token.</param>
+        </member>
+        <member name="M:Bitcraft.StateMachine.Token.ToString">
+            <summary>
+            Provides a string representation of the token.
+            </summary>
+            <returns>Returns the string representation of the token.</returns>
+        </member>
+        <member name="M:Bitcraft.StateMachine.Token.Equals(Bitcraft.StateMachine.Token)">
+            <summary>
+            Checks whether the current token is the same as another one.
+            </summary>
+            <param name="other">The other token to check equality upon.</param>
+            <returns>Returns true if both tokens are the same, false otherwise.</returns>
+        </member>
+        <member name="M:Bitcraft.StateMachine.Token.Equals(System.Object)">
+            <summary>
+            Checks whether the current token is the same as another one.
+            </summary>
+            <param name="obj">The other token to check equality upon.</param>
+            <returns>Returns true if both tokens are the same, false otherwise.</returns>
+        </member>
+        <member name="M:Bitcraft.StateMachine.Token.GetHashCode">
+            <summary>
+            Provides the hash code of the token.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Bitcraft.StateMachine.Token.op_Equality(Bitcraft.StateMachine.Token,Bitcraft.StateMachine.Token)">
+            <summary>
+            Checks whether the tokens a and b are the same.
+            </summary>
+            <param name="a">Left hand-side token.</param>
+            <param name="b">Right hand-side token.</param>
+            <returns>Returns true if both tokens are the same, false otherwise.</returns>
+        </member>
+        <member name="M:Bitcraft.StateMachine.Token.op_Inequality(Bitcraft.StateMachine.Token,Bitcraft.StateMachine.Token)">
+            <summary>
+            Checks whether the tokens a and b are different.
+            </summary>
+            <param name="a">Left hand-side token.</param>
+            <param name="b">Right hand-side token.</param>
+            <returns>Returns true if both tokens are different, false otherwise.</returns>
+        </member>
+        <member name="T:Bitcraft.StateMachine.TransitionInfo">
+            <summary>
+            Represents information of a state machine transition.
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.TransitionInfo.TargetStateToken">
+            <summary>
+            Gets or sets the target state token. (state active after transition)
+            </summary>
+        </member>
+        <member name="P:Bitcraft.StateMachine.TransitionInfo.TargetStateData">
+            <summary>
+            Gets or sets the data to transfer from the current state to the target state.
+            </summary>
+        </member>
+        <member name="T:Bitcraft.StateMachine.ActionResultType">
+            <summary>
+            Represents the response to performing an action on the state machine.
+            </summary>
+        </member>
+        <member name="F:Bitcraft.StateMachine.ActionResultType.Success">
+            <summary>
+            Action has performed successfully.
+            </summary>
+        </member>
+        <member name="F:Bitcraft.StateMachine.ActionResultType.ErrorUnknownAction">
+            <summary>
+            Error, the current state does not know about the given action.
+            </summary>
+        </member>
+        <member name="F:Bitcraft.StateMachine.ActionResultType.ErrorAlreadyPerformingAction">
+            <summary>
+            Error, the state machine is already performing an action asynchronously.
+            </summary>
+        </member>
+        <member name="F:Bitcraft.StateMachine.ActionResultType.ErrorForbiddenFromSpecialEvents">
+            <summary>
+            Error, cannot perform action from special events such as OnInitialize, OnEnter and OnExit.
+            </summary>
+        </member>
+    </members>
+</doc>
